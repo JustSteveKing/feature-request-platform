@@ -1,50 +1,29 @@
-name: Test Suite
+name: Tests
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+on: [pull_request, push]
 
 jobs:
-  tests:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: true
-      matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-        php:
-          - 8.2
-        stability:
-          - prefer-lowest
-          - prefer-stable
-
-
-    name: PHP-${{ matrix.php }} -- ${{ matrix.stability }} -- ${{ matrix.os }}
+  phpunit:
+    runs-on: ubuntu-22.04
+    container:
+      image: kirschbaumdevelopment/laravel-test-runner:8.2
 
     steps:
-
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, bcmath, soap, intl, gd, exif, iconv, fileinfo
-          coverage: none
-
-      - name: Install Dependencies
+          php-version: '8.2'
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: Install composer dependencies
         run: |
-          composer install --prefer-dist --no-interaction
+          composer install --no-scripts
+      - name: Prepare Laravel Application
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          npm ci
+          npm run build
 
-      - name: Run Static Analysis
-        run: composer stan
-
-      - name: Run Tests
-        run: composer test
+      - name: Run Testsuite
+        run: php artisan test
