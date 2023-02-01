@@ -1,0 +1,50 @@
+name: Test Suite
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+        php:
+          - 8.1
+        stability:
+          - prefer-lowest
+          - prefer-stable
+
+
+    name: PHP-${{ matrix.php }} -- ${{ matrix.stability }} -- ${{ matrix.os }}
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, bcmath, soap, intl, gd, exif, iconv, fileinfo
+          coverage: none
+
+      - name: Install Dependencies
+        run: |
+          composer install --prefer-dist --no-interaction
+
+      - name: Run Static Analysis
+        run: composer stan
+
+      - name: Run Tests
+        run: composer test
