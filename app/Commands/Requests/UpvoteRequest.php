@@ -10,12 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 final class UpvoteRequest implements UpvoteRequestContract
 {
-    public function handle(string $user, string $id): bool
+    public function handle(string $user, Request $request): bool
     {
-        $request = Request::query()->findOrFail(
-            id: $id,
-        );
-
         $count = (int) $request->getAttribute('vote_count');
 
         return DB::transaction(

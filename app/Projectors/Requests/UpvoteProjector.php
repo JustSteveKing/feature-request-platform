@@ -22,7 +22,7 @@ final class UpvoteProjector extends Projector
     {
         $this->command->handle(
             user: $event->user,
-            id: $event->request,
+            request: $event->request,
         );
     }
 }

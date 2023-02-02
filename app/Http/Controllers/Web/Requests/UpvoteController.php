@@ -23,7 +23,7 @@ final readonly class UpvoteController
             uuid: Str::uuid()->toString(),
         )->registerUpvote(
             user: strval($this->user->getAuthIdentifier()),
-            request: strval($model->getKey()),
+            request: $model,
         )->persist();
 
         return redirect()->back();

@@ -18,7 +18,9 @@ it('stores the event when upvoting', function (): void {
     )->toEqual(0);
 
     actingAs(User::factory()->create())->post(
-        uri: route('upvote', $request->getKey()),
+        uri: action(UpvoteController::class, [
+            'request' => $request,
+        ])
     )->assertRedirect();
 
     expect(
