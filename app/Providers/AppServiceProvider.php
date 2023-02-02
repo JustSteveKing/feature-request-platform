@@ -4,27 +4,17 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Commands\Requests\CreateRequest;
+use App\Commands\Requests\UpdateRequest;
+use App\Contracts\Commands\Requests\CreateRequestContract;
+use App\Contracts\Commands\Requests\UpdateRequestContract;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register(): void
-    {
-
-    }
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot(): void
-    {
-
-    }
+    public array $bindings = [
+        // Commands
+        CreateRequestContract::class => CreateRequest::class,
+        UpdateRequestContract::class => UpdateRequest::class,
+    ];
 }

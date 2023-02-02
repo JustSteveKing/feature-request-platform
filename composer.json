@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.5",
+        "juststeveking/laravel-data-object-tools": "^1.0",
         "laravel/framework": "^9.50",
         "laravel/sanctum": "^3.2.1",
         "laravel/tinker": "^2.8"
@@ -19,6 +20,8 @@
         "mockery/mockery": "^1.5.1",
         "nunomaduro/collision": "^6.4",
         "nunomaduro/larastan": "^2.4",
+        "pestphp/pest": "^1.22",
+        "pestphp/pest-plugin-laravel": "^1.4",
         "phpunit/phpunit": "^9.5.28",
         "spatie/laravel-ignition": "^1.6.4"
     },
